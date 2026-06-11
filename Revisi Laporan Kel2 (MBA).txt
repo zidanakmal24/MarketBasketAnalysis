@@ -1,0 +1,25 @@
+REVISI PPT:
+1. Menghapus 'metodologi penelitian' karena udh ada slide Data Collection di bawah nya
+2. Flowchart cukup 1 --> mencakup dari awal load data hingga menjawab permasalahan bisnis
+3. Data Understanding dihias serapi mungkin (jangan langsung tempel output code)
+4. Merapikan bagian Data Preprocessing
+5. EDA (menjawab 5 insight bisnis dari data) diperbanyak dari sebelum nya
+6. Menambah 1 modelling lagi (FP-Growth & Apriori)
+7. Menambah Model Evaluation
+8. Menambah "Business Insight & Recommendation"
+9. Membuat Dashboard Analitik
+10. Laporan + PPT + Infografis = Della & Moreno
+11. Source Code (GitHub)
+     - Backend = Zidan & Indra
+     - Frontend = Zidan & Indra
+12. Dashboard = Zidan & Indra
+13. Video = bareng
+
+DEADLINE 1 = Minggu, 7 Juni 2026 (meet: menyusul)
+- Progress code: Backend Fix + Mock Up (rancangan design UI)
+- Progress Laporan + PPT: Selesai sampe "Business Insight & Recommendation"
+- Pembahasan pembuatan video menyusul
+
+DEADLINE 2 = Kamis, 11 Juni 2026 (meet: malam)
+- Progress code: sudah menyambung + jadi dashboard + bisa diakses 
+- Progress laporan: sudah selesai semua + infografis nya

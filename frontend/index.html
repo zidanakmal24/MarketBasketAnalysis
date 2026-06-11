@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Market Basket Analysis</title>
+    <!-- Menggunakan font Google yang bersih dan profesional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <!-- Header Utama Berbasis Teks -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="title-group">
+                    <h1>Market Basket Analysis</h1>
+                    <p class="subtitle">Sistem Rekomendasi Asosiasi Produk Ritel</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-grid">
+            <!-- Kolom Kiri: Navigasi & Input -->
+            <aside class="sidebar-panel">
+                <div class="panel-section">
+                    <h2 class="section-title">Pencarian Pola</h2>
+                    <p class="section-desc">Pilih satu produk utama untuk menemukan produk apa yang sering dibeli
+                        bersamaan oleh pelanggan.</p>
+
+                    <div class="input-block">
+                        <label for="product-select" class="input-label">Pilih Produk Target</label>
+                        <select id="product-select" class="custom-select">
+                            <option value="">Memuat daftar produk...</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-analyze" class="btn-primary">Analisis Asosiasi</button>
+                </div>
+
+                <div class="panel-section" style="margin-top: 2rem;">
+                    <h2 class="section-title">Parameter Model</h2>
+                    
+                    <div class="input-block">
+                        <label for="algorithm-select" class="input-label">Algoritma</label>
+                        <select id="algorithm-select" class="custom-select">
+                            <option value="fpgrowth">FP-Growth</option>
+                            <option value="apriori">Apriori</option>
+                        </select>
+                    </div>
+
+                    <div class="input-block" style="margin-top: 1rem;">
+                        <label for="min-support" class="input-label">Min Support: <span id="support-val">0.003</span></label>
+                        <input type="range" id="min-support" min="0.001" max="0.050" step="0.001" value="0.003" style="width: 100%;">
+                    </div>
+
+                    <div class="input-block" style="margin-top: 1rem;">
+                        <label for="min-confidence" class="input-label">Min Confidence: <span id="confidence-val">0.20</span></label>
+                        <input type="range" id="min-confidence" min="0.01" max="1.00" step="0.01" value="0.20" style="width: 100%;">
+                    </div>
+                </div>
+
+                <!-- NEW: Panel Top Bestsellers -->
+                <div class="panel-section bg-light">
+                    <h2 class="section-title">Top 10 Produk Terlaris</h2>
+                    <ul id="bestseller-list" class="bestseller-list">
+                        <li style="color: var(--text-muted); font-size: 0.9rem;">Memuat data...</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Kolom Kanan: Area Hasil Output -->
+            <section class="main-panel">
+
+                <!-- NEW: Kartu KPI -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <span class="kpi-title">Total Produk Valid</span>
+                        <h2 class="kpi-value" id="kpi-products">...</h2>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-title">Total Aturan (Rules) Ditemukan</span>
+                        <h2 class="kpi-value" id="kpi-rules">...</h2>
+                    </div>
+                </div>
+
+                <!-- Status Awal -->
+                <div id="welcome-message" class="status-box">
+                    <h2 class="status-title">Belum Ada Analisis</h2>
+                    <p class="status-text">Hasil rekomendasi dan metrik kekuatan hubungan antar produk akan ditampilkan
+                        di sini setelah Anda melakukan pencarian pada panel di sebelah kiri.</p>
+                </div>
+
+                <!-- Status Memuat -->
+                <div id="loading-indicator" class="status-box bg-accent" style="display: none;">
+                    <h2 class="status-title text-white">Memproses Data Transaksi...</h2>
+                    <p class="status-text text-white">Mencocokkan produk dengan aturan asosiasi dari ratusan ribu
+                        riwayat pembelian.</p>
+                </div>
+
+                <!-- Kontainer Hasil Analisis -->
+                <div id="results-container" style="display: none;">
+
+                    <div class="result-header">
+                        <p class="result-label">REKOMENDASI UNTUK PRODUK</p>
+                        <h2 class="result-target" id="target-product-name">Nama Produk</h2>
+                    </div>
+
+                    <!-- Grid Kartu Rekomendasi -->
+                    <div class="recommendation-grid" id="recommendations-list">
+                        <!-- Kartu akan dimasukkan melalui Javascript -->
+                    </div>
+
+                    <!-- NEW: Insight Panel -->
+                    <div class="insight-container" id="business-insight-panel" style="display: none;">
+                        <div class="insight-header">Rekomendasi Tindakan Bisnis</div>
+                        <p class="insight-text" id="business-insight-text">Memuat rekomendasi strategis...</p>
+                    </div>
+
+                    <!-- Visualisasi Data -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Perbandingan Metrik Evaluasi</h3>
+                            <p class="chart-desc">Menganalisis seberapa kuat probabilitas dan daya tarik antar produk.</p>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- NEW: Global Bundles Panel -->
+                <div class="panel-section" id="global-bundles-container" style="margin-top: 2rem;">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Top 5 Pasangan Produk Terbaik (Global)</h3>
+                        <p class="chart-desc">Pasangan produk dengan tingkat asosiasi (Lift) terkuat dari keseluruhan
+                            riwayat toko. Sangat direkomendasikan untuk promosi bundling.</p>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table bundle-table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Jika Membeli</th>
+                                    <th style="text-align: left;">Saran Bundling</th>
+                                    <th style="text-align: right;">Confidence</th>
+                                    <th style="text-align: right;">Nilai Lift</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bundles-tbody">
+                                <tr>
+                                    <td colspan="4"
+                                        style="text-align: center; color: var(--text-muted); padding: 1rem;">Memuat data
+                                        bundling...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

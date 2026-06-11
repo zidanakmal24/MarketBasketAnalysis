@@ -1,0 +1,16 @@
+# Dataset Mentah
+data/*.csv
+data/*.xlsx
+
+# File Media (Video/Image output)
+*.mp4
+*.webp
+
+# Python cache & virtual environment
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
