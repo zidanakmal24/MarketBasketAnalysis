@@ -39,7 +39,7 @@ def load_model():
             rules_apriori = rules_fpgrowth
             print("Warning: association_rules_apriori.pkl belum siap, fallback ke fpgrowth")
             
-        top_products = joblib.load('../model/top_products.pkl')
+        top_products = joblib.load(os.path.join(BASE_DIR, 'model', 'top_products.pkl'))
         
         products_with_rules = set()
         for x in rules_fpgrowth['antecedents']:
