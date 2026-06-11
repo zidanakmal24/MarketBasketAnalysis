@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 welcomeMessage.style.display = 'block';
                 welcomeMessage.querySelector('.status-title').innerText = 'Tidak Ada Pola';
-                welcomeMessage.querySelector('.status-text').innerText = 'Produk ini tidak memiliki hubungan belanja yang cukup kuat dengan produk lain berdasarkan minimum support & confidence yang ditetapkan.';
+                welcomeMessage.querySelector('.status-text').innerHTML = 'Produk ini tidak memiliki hubungan belanja yang cukup kuat dengan produk lain berdasarkan minimum support & confidence yang ditetapkan.<br><br><small style="color: #64748b;">Debug Payload: ' + JSON.stringify(payload) + '<br>Debug Response: ' + JSON.stringify(data) + '</small>';
             }
         })
         .catch(function(error) {

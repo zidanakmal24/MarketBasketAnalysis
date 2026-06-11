@@ -103,9 +103,6 @@ def get_top_bundles():
         
     return {"bundles": bundles}
 
-# MOUNT FRONTEND (Berada di root / agar file html, css, dan js bisa terakses)
-frontend_path = os.path.join(BASE_DIR, 'frontend')
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
 
 # Struktur data input yang diharapkan dari Frontend
 class RecommendationRequest(BaseModel):
@@ -172,7 +169,12 @@ def recommend(request: RecommendationRequest):
         "message": f"Ditemukan {len(recommendations)} rekomendasi."
     }
 
+# MOUNT FRONTEND (Berada di root / agar file html, css, dan js bisa terakses)
+frontend_path = os.path.join(BASE_DIR, 'frontend')
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+
 if __name__ == "__main__":
     import uvicorn
     # Menjalankan server di port 8080 untuk menghindari konflik
     uvicorn.run("app:app", host="0.0.0.0", port=8080, reload=True)
+    # Trigger reload
