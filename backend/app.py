@@ -56,10 +56,6 @@ def load_model():
 async def startup_event():
     load_model()
 
-# Route untuk mengecek apakah server hidup
-@app.get("/")
-def read_root():
-    return {"status": "ok", "message": "API Market Basket Analysis Berjalan!"}
 
 # Route untuk mendapatkan daftar semua produk populer (untuk dropdown Frontend)
 @app.get("/api/products")
@@ -107,13 +103,9 @@ def get_top_bundles():
         
     return {"bundles": bundles}
 
-# MOUNT FRONTEND
+# MOUNT FRONTEND (Berada di root / agar file html, css, dan js bisa terakses)
 frontend_path = os.path.join(BASE_DIR, 'frontend')
-app.mount("/static", StaticFiles(directory=frontend_path), name="static")
-
-@app.get("/")
-def serve_frontend():
-    return FileResponse(os.path.join(frontend_path, 'index.html'))
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
 
 # Struktur data input yang diharapkan dari Frontend
 class RecommendationRequest(BaseModel):
